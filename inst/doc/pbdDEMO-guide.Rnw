@@ -1,0 +1,189 @@
+\documentclass[oneside,11pt]{book}
+\usepackage[margin=1.1in]{geometry}
+
+% Style and settings
+\input{pbdDEMO-include/style.tex}
+
+%%% Required by R CMD check
+%\VignetteIndexEntry{pbdDEMO-Guide}
+
+\title{\Huge Speaking Serial R with a Parallel Accent\\[.3cm] 
+  {\LARGE \proglang{pbdR} Package Examples and Demonstrations}}
+
+\author{
+\begin{minipage}{\textwidth}
+\centering
+%
+% The pbdR Core Team\\[.8cm]
+%
+Drew Schmidt\\
+{\small\emph{Remote Data Analysis and Visualization Center,\\
+University of Tennessee, Knoxville}}\\[.4cm]
+%%%
+Wei-Chen Chen\\
+{\small\emph{Computer Science and Mathematics Division, \\
+Oak Ridge National Laboratory}}\\[.4cm]
+%%%
+Pragneskumar Patel\\
+{\small\emph{Remote Data Analysis and Visualization Center,\\
+University of Tennessee, Knoxville}}\\[.4cm]
+%
+George Ostrouchov\\
+{\small\emph{Computer Science and Mathematics Division, \\
+Oak Ridge National Laboratory}}
+%%%
+\\[2.5in]
+Version 1.0
+%
+\end{minipage}
+}
+
+\begin{document}
+
+% First header/footer style
+\prebodyheadfoot
+
+\begin{textblock*}{0mm}(-7.5mm,-8mm)
+\includegraphics[scale=1.07]{./cover/cover.pdf}
+\end{textblock*}
+
+\newpage\ \newpage
+
+\date{}
+\maketitle
+
+%%%%%%%%%%%%%%%%%
+\ \vfill
+
+\copyright\ 2012 pbdR Core Team.  All rights reserved.
+
+Permission is granted to make and distribute verbatim copies of this vignette and its source provided the copyright notice and this permission notice are preserved on all copies.
+
+This publication was typeset using \LaTeX.  The illustrations were created using the \pkg{ggplot2} package \citep{ggplot2}, except for Figure~\ref{fig:pbdrpackages}, which was created in Microsoft Powerpoint.
+
+%%%%%%%%%%%%%%%%%
+
+\pagenumbering{roman}
+\newpage
+\fancyhf[C]{CONTENTS}
+\fancyhf[R]{\thepage }
+\fancyfoot{}
+\tableofcontents
+
+% ----------------------
+% Pre-body (roman numeral pages)
+% ----------------------
+
+\newpage
+\fancyhf[C]{}
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{section}{List of Figures}
+\listoffigures
+
+\newpage
+\phantomsection
+\addcontentsline{toc}{section}{List of Tables}
+\listoftables
+
+% \newpage
+% \fancyhf[C]{}
+% \phantomsection
+% \input{./pbdDEMO-include/00-preface}
+
+% \newpage
+% \fancyhf[C]{}
+% \phantomsection
+% \input{./pbdDEMO-include/00-foreword}
+
+\newpage
+\fancyhf[C]{}
+\phantomsection
+\input{./pbdDEMO-include/00-acknowledgement}
+
+\newpage
+\input{./pbdDEMO-include/00-warn}
+
+
+% ----------------------
+% Body
+% ----------------------
+
+\newpage
+\pagenumbering{arabic}
+\setcounter{page}{1}
+\pagestyle{fancy}
+
+% Body header/footer style
+\bodyheadfoot
+
+% intro
+\part{Preliminaries}
+\input{./pbdDEMO-include/01-introduction}
+\input{./pbdDEMO-include/02-background}
+% spmd methods
+\part{Direct MPI Methods}
+\input{./pbdDEMO-include/02.5-mpi}
+\input{./pbdDEMO-include/03-statistics}
+% ddmatrix methods
+\part{Distributed Matrix Methods}\label{part:dmat}
+\input{./pbdDEMO-include/04-gen}
+\input{./pbdDEMO-include/07-dmat_basic}
+\input{./pbdDEMO-include/08-dmat_stats}
+% reading /managing data
+\part{Reading and Managing Data}
+\input{./pbdDEMO-include/05-reading}
+\input{./pbdDEMO-include/05-z_pbdNCDF4}
+\input{./pbdDEMO-include/06-redist}
+% appendices
+\appendix
+\input{./pbdDEMO-include/appendix}
+
+%
+\newpage
+
+% \makeatletter
+% \def\@makeschapterhead#1{%
+%   \vspace*{50\p@}% space before the title
+%   {\parindent \z@ \raggedright
+%     \normalfont
+%     \interlinepenalty\@M
+%     \Huge \bfseries  #1\par\nobreak
+%     \vskip 40\p@ % space after the title
+%   }}
+% \makeatother
+
+\renewcommand{\thechapter}{}
+
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{chapter}{References}
+\renewcommand{\bibname}{References}
+
+\makeatletter
+\renewenvironment{thebibliography}[1]
+     {\chapter*{\bibname}
+      \@mkboth{\MakeUppercase\bibname}{\MakeUppercase\bibname}%
+      \list{\@biblabel{\@arabic\c@enumiv}}%
+           {\settowidth\labelwidth{\@biblabel{#1}}%
+            \leftmargin\labelwidth
+            \advance\leftmargin\labelsep
+            \@openbib@code
+            \usecounter{enumiv}%
+            \let\p@enumiv\@empty
+            \renewcommand\theenumiv{\@arabic\c@enumiv}}%
+      \sloppy
+      \clubpenalty4000
+      \@clubpenalty \clubpenalty
+      \widowpenalty4000%
+      \sfcode`\.\@m}
+     {\def\@noitemerr
+       {\@latex@warning{Empty `thebibliography' environment}}%
+      \endlist}
+\makeatother
+
+\bibliography{./pbdDEMO-include/pbdDEMO}
+
+\printindex
+
+\end{document}

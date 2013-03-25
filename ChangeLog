@@ -1,0 +1,30 @@
+
+======================= Log Before Release =====================================
+
+2013-03-12:
+  * Added cover to vignette.
+  * Changed title of vignette.
+  * Cleaned up for CRAN.
+
+2013-02-07:
+  * Add pbdNCDF4 examples.
+  * Add SPMD data matrix major for load balance functions, and
+    spmd2dmat and dmat2spmd functions.
+  * Add ncvar_put_* and ncvar_get_*, and simplify their examples.
+  * Add NetCDF4 chapter to vignette.
+
+2012-11-27:
+  * Added pbdBASE and pbdDMAT examples.
+  * Added numerous functions.
+
+2012-11-06:
+  * Add pbdMPI and pbdSLAP examples.
+  * Add vignette with tons examples.
+  * Add demo functions.
+  * Add load.balance and unload.balance functions.
+  * Add spmd2dmat and dmat2spmd functions.
+
+2012-09-11:
+  * Package created
+  * DMAT - Added sql reader
+  * DMAT - Added huge random matrix generation
