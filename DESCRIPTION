@@ -1,10 +1,11 @@
 Package: pbdDEMO
 Title: Programming with Big Data -- Demonstrations of pbd Packages
-Version: 0.1-0
-Date: 2013-01-18
-Depends: R (>= 2.14.0), methods, rlecuyer, sqldf, pbdMPI (>= 0.1-6),
-        pbdSLAP (>= 0.1-5), pbdBASE (>= 0.2-1), pbdDMAT(>= 0.2-1)
-Enhances: maps, RColorBrewer, pbdNCDF4 (>= 0.1-0)
+Version: 0.1-1
+Date: 2013-06-20
+Depends: R (>= 2.14.0), methods, rlecuyer, pbdMPI (>= 0.1-8), pbdSLAP
+        (>= 0.1-6), pbdBASE (>= 0.2-2), pbdDMAT(>= 0.2-2)
+Enhances: maps, RColorBrewer, pbdNCDF4 (>= 0.1-0), pmclust, MixSim,
+        EMCluster, sqldf, phyclust
 LazyLoad: yes
 LazyData: yes
 Authors@R: c(person("Drew", "Schmidt", role = c("aut", "cre"), email =
@@ -20,10 +21,12 @@ URL: http://r-pbd.org/
 BugReports: http://group.r-pbd.org/
 MailingList: Please send questions and comments regarding pbdR to
         RBigData@gmail.com
-Packaged: 2013-03-25 02:07:50 UTC; mschmid3
-Author: Drew Schmidt [aut, cre], Wei-Chen Chen [aut], George Ostrouchov
-        [aut], Pragneshkumar Patel [aut]
+Packaged: 2013-07-11 08:24:16 UTC; mschmid3
+Author: Drew Schmidt [aut, cre],
+  Wei-Chen Chen [aut],
+  George Ostrouchov [aut],
+  Pragneshkumar Patel [aut]
 Maintainer: Drew Schmidt <schmidt@math.utk.edu>
 NeedsCompilation: no
 Repository: CRAN
-Date/Publication: 2013-03-25 07:20:05
+Date/Publication: 2013-07-11 13:27:16
