@@ -1,12 +1,10 @@
-
-%%% ----------------------------------------------------------------------
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
 \chapter{MPI for the R User}
 \label{chp:mpi_for_the_r_user}
 
-\inspire{I cannot live without brain-work. What else is there to live for?}{Sherlock Holmes}
+\inspire%
+{Everybody who learns concurrency thinks they understand it, ends up finding mysterious races they 
+thought weren't possible, and discovers that they didn't actually understand it yet after all.}%
+{Herb Sutter}
 \vspace{0.5cm}
 
 
@@ -78,7 +76,7 @@ vignette.
 
 There is another package on the CRAN which the \proglang{R} programmer may
 use to interface with MPI, namely
-\pkg{Rmpi}\index{Package!\pkg{Rmpi}}~\citep{Rmpi}. There are several issues
+\pkg{Rmpi}\index{Package!\pkg{Rmpi}}~\citep{Yu2002}. There are several issues
 one must consider when choosing which package to use if one were to only
 use one of them.
 \begin{enumerate}
@@ -86,7 +84,7 @@ use one of them.
  \item $(+)$ \pkg{pbdMPI} is easier to use than \pkg{Rmpi}
  \item\label{enum:perf} $(+)$ \pkg{pbdMPI} can often outperform \pkg{Rmpi}
  \item\label{enum:integrate} $(+)$ \pkg{pbdMPI} integrates with the rest of
-       \proglang{pbdR}
+       \pbdR
  %
  \item\label{enum:dompi} $(-)$ \pkg{Rmpi} can be used with
       \pkg{foreach}~\citep{foreach}\index{Package!\pkg{foreach}} via
@@ -96,7 +94,7 @@ use one of them.
 
 We do not believe that the above can be reduced to a zero-sum game with
 unambiguous winner and loser. Ultimately the needs of the user (or
-developer) are paramount. We believe that \proglang{pbdR}
+developer) are paramount. We believe that \pbdR
 makes a very good case for itself, especially in the SPMD style,
 but it can not satisfy everyone. However, for the remainder of this
 section, we will present the case for several of the, as yet,
@@ -673,9 +671,9 @@ family of ``*ply'' functions, in the same vein as \proglang{R}'s
   \code{pbdLapply(X, FUN, \dots)} --- analogue of \code{lapply()}\\
   \code{pbdSapply(X, FUN, \dots)} --- analogue of \code{sapply()}
 \end{itemize}
-\index{Code!\code{pbdApply}}
-\index{Code!\code{pbdLapply}}
-\index{Code!\code{pbdSapply}}
+\index{Code!\code{pbdApply()}}
+\index{Code!\code{pbdLapply()}}
+\index{Code!\code{pbdSapply()}}
 For more efficient approach (non-barrier), one may consider use task pull
 parallelism instead of ``*ply'' functions, see Section~\ref{sec:task_pull}
 for more details.
@@ -702,8 +700,9 @@ which pieces are local computations.
 
 
 
+\section{Miscellaneous Basic MPI Tasks}
 
-\section{Timing MPI Tasks}
+\subsection{Timing MPI Tasks}
 
 Measuring run time is a fundamental performance measure in computing.
 However, in parallel computing, not all ``parallel components'' (e.g.
@@ -734,6 +733,102 @@ timer <- function(timed)
   return( c(min=mintime, mean=meantime, max=maxtime) )
 }
 \end{lstlisting}
+
+
+
+
+\subsection{Distributed Logic}%\easy
+
+\emph{Example:  Manage comparisons across all MPI processes.}
+
+The demo command is
+\begin{lstlisting}
+### At the shell prompt, run the demo with 4 processors by
+### (Use Rscript.exe for windows system)
+mpiexec -np 4 Rscript -e "demo(comparators,'pbdDEMO',ask=F,echo=F)"
+\end{lstlisting}
+
+This final MPI example is not statistical in nature, but is very useful
+all the same, and so we include it here. The case frequently arises where
+the MPI programmer will need to do logical comparisons across all processes.
+The idea is to extend the very handy \code{all()} and \code{any()}
+base \proglang{R} functions to operate similarly on distributed logicals.
+
+You could do this directly. Say you want to see if any processes
+have \code{TRUE} stored in the variable \code{localLogical}.
+This amounts to something on the order of:
+\begin{lstlisting}[language=rr,title=R Code]
+globalLogical <- as.logical(allreduce(localLogical, op='max')
+\end{lstlisting}
+Or you can use the function \code{comm.any()} from \pkg{pbdMPI}:
+\begin{lstlisting}[language=rr,title=R Code]
+globalLogical <- comm.any(localLogical)
+\end{lstlisting}
+which essentially does the same thing, but is more concise. Likewise,
+there is a \code{comm.all()} function,\index{Code!\code{comm.all()}}
+which in the equivalent ``long-form'' above would use \code{op='min'}.
+
+The demo for these functions consists of two parts. For the first, we do a
+simple demonstration of how these functions behave:
+\begin{lstlisting}[language=rr,title=R Code]
+rank <- comm.rank()
+
+comm.cat("\ntest value:\n", quiet=T)
+test <- (rank > 0)
+comm.print(test, all.rank=T, quiet=T)
+
+comm.cat("\ncomm.all:\n", quiet=T)
+test.all <- comm.all(test)
+comm.print(test.all, all.rank=T, quiet=T)
+
+comm.cat("\ncomm.any:\n", quiet=T)
+test.any <- comm.any(test)
+comm.print(test.any, all.rank=T, quiet=T)
+\end{lstlisting}
+which should have the output:
+\begin{lstlisting}[language=sh]
+test value:
+[1] FALSE
+[1] TRUE
+[1] TRUE
+[1] TRUE
+
+comm.all:
+[1] FALSE
+[1] FALSE
+[1] FALSE
+[1] FALSE
+
+comm.any:
+[1] TRUE
+[1] TRUE
+[1] TRUE
+[1] TRUE
+\end{lstlisting}
+
+The demo also has another use case which could be very useful to a developer.
+You may be interested in trying something on only one processor and then
+shutting down all MPI processes if problems are encountered. To do this
+in SPMD style, you can create a variable on all processes to track whether
+a problem has been encountered. Then after critical code sections,
+use \code{comm.any()}\index{Code!\code{comm.any()}}
+to update and act appropriately.  A very simple example is provided below.
+
+\begin{lstlisting}[language=rr,title=R Code]
+need2stop <- FALSE
+
+if (rank==0){
+  need2stop <- TRUE
+}
+
+need2stop <- comm.any(need2stop)
+
+if (need2stop)
+  stop("Problem :[") 
+\end{lstlisting}
+
+
+
 
 
 
