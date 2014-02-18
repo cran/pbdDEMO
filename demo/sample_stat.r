@@ -1,7 +1,7 @@
 ### SHELL> mpiexec -np 4 Rscript --vanilla [...].r
 
 ### Initial MPI.
-library(pbdDEMO, quiet = TRUE)
+library(pbdDEMO, quietly = TRUE)
 init()
 
 ### Generate balanced fake data.
@@ -12,7 +12,7 @@ id.get <- get.jid(N)
 x.gbd <- x[id.get]        # Distributed data.
 
 ### Run.
-ret.gbd <- demo.stat(x.gbd)
+ret.gbd <- mpi.stat(x.gbd)
 
 ### Output.
 comm.print(ret.gbd)

@@ -1,10 +1,10 @@
-library(pbdDEMO, quiet=T)
+library(pbdDEMO, quietly=TRUE)
 init.grid()
 
 # set independent seeds using Rlecuyer
-comm.set.seed(diff = TRUE)
+comm.set.seed(seed=1234, diff = TRUE)
 
 # verify system solving at scale
-demo.verify.solve(nrows=1e3)
+verify.solve(nrows=1e3)
 
 finalize()
