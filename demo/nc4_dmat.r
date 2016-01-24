@@ -1,5 +1,5 @@
-library(pbdDEMO, quietly = TRUE)
-library(pbdNCDF4, quietly = TRUE)
+suppressMessages(library(pbdDEMO, quietly = TRUE))
+suppressMessages(library(pbdNCDF4, quietly = TRUE))
 
 # -------------------------------------
 # Write and read NetCDF4 file in ddmatrix
@@ -8,7 +8,7 @@ library(pbdNCDF4, quietly = TRUE)
 ### initial grid
 init.grid()
 if(comm.size() != 4){
-  stop("This example requries 4 processors.")
+  comm.stop("This example requries 4 processors.")
 }
 
 ### divide data into ddmatrix
@@ -23,7 +23,7 @@ var.def <- ncvar_def("TREFHT", "K", list(lon = lon, lat = lat), NULL)
 ### parallel write
 file.name <- "nc4_dmat.nc"
 nc <- nc_create_par(file.name, var.def)
-ncvar_put_dmat(nc, "TREFHT", dx)
+demo.ncvar_put_dmat(nc, "TREFHT", dx)
 nc_close(nc)
 if(comm.rank() == 0){
   ncdump(file.name)
@@ -34,7 +34,8 @@ nc <- nc_open_par(file.name)
 if(comm.rank() == 0){
   print(nc)
 }
-new.dx <- ncvar_get_dmat(nc, "TREFHT", bldim = bldim(dx), ICTXT = ctxt(dx))
+new.dx <- demo.ncvar_get_dmat(nc, "TREFHT", bldim = bldim(dx),
+                              ICTXT = dmat.ictxt(dx))
 nc_close(nc)
 
 finalize()

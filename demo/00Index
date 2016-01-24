@@ -19,7 +19,6 @@ ols_dmat            pbdDEMO   Ordinary least squares with pbdDMAT.
 
 
 read_csv            pbdDEMO   Read a csv into ddmatrix format.
-read_sql            pbdDEMO   Read a database into ddmatrix format.
 read_ncdf           pbdDEMO   Read and write ddmatrix to netcdf4 format.
 
 trefht              pbdDEMO   An example of CAM5 output.
@@ -27,6 +26,10 @@ nc4_serial          pbdDEMO   An example searial read and write NetCDF4.
 nc4_parallel        pbdDEMO   An example parallel read and write NetCDF4.
 nc4_dmat            pbdDEMO   An example block-cyclic read and write NetCDF4.
 nc4_gbdc            pbdDEMO   An example GBD column-major read and write NetCDF4.
+nc4_par_write_1d    pbdDEMO   Parallel write 1D NetCDF4 files in ddmatrix.
+nc4_par_write_2d    pbdDEMO   Parallel write 2D NetCDF4 files in ddmatrix.
+nc4_par_read_1d     pbdDEMO   Parallel read 1D NetCDF4 files in ddmatrix.
+nc4_par_read_2d     pbdDEMO   Parallel read 2D NetCDF4 files in ddmatrix.
 
 balance             pbdDEMO   Simple load balance and unload balance.
 gbd_dmat            pbdDEMO   Simple convertion of GBD and DMAT.
@@ -40,3 +43,6 @@ iris_gbd            pbdDEMO   Iris GBD code.
 phyclust_bootstrap  pbdDEMO   Bootstrap phyclust results.
 
 mcmc_galaxy         pbdDEMO   Galaxy MCMC example.
+
+dist_iris           pbdDEMO   Hierarchical clustering of iris.
+dist_pony           pbdDEMO   Neighbor-joining tree of Pony 524.
